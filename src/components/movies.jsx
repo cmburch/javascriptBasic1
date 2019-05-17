@@ -5,13 +5,16 @@ import { getMovies } from "../services/fakeMovieService";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import { getGenres } from '../services/fakeGenreService';
+import _ from "lodash";
 
 class Counter extends Component {
   state = {
     movies: [],
     genres: [],
     pageSize: 4,
-    currentPage:1
+    currentPage:1,
+    sortColumn: { path: "title", order: "asc" }
+
   };
 
   componentDidMount() {
@@ -44,12 +47,22 @@ class Counter extends Component {
   };
 
   handleSort = path => {
-    console.log(path);
+    // console.log(path);
+    const sortColumn = {...this.state.sortColumn};
+    if(sortColumn.path === path){
+      sortColumn.order = (sortColumn.order === 'asc') ? 'desc' : 'asc';
+    }
+    else {
+      sortColumn.path = path;
+      sortColumn.order = 'asc';
+    }
+    this.setState({ sortColumn });
+
   };
 
     render() {
       const { length: count } = this.state.movies;
-      const { pageSize, currentPage,selectedGenre,movies: allMovies } = this.state;
+      const { pageSize, currentPage,sortColumn,selectedGenre,movies: allMovies } = this.state;
 
       if (count === 0) return <p>There are no movies in the database.</p>;
       
@@ -59,7 +72,9 @@ class Counter extends Component {
         ? allMovies.filter(m => m.genre._id === selectedGenre._id)
         : allMovies;
 
-      const movies = paginate(filtered, currentPage, pageSize);
+      const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+      const movies = paginate(sorted, currentPage, pageSize);
 
         return (
           <div className="row">
