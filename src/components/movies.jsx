@@ -38,15 +38,21 @@ class Counter extends Component {
 
   handleGenreSelect = genre => {
     // console.log(genre);
+    console.log(this.state);
     this.setState({ selectedGenre: genre});
   };
     render() {
       const { length: count } = this.state.movies;
-      const { pageSize, currentPage,movies: allMovies } = this.state;
+      const { pageSize, currentPage,selectedGenre,movies: allMovies } = this.state;
 
       if (count === 0) return <p>There are no movies in the database.</p>;
- 
-      const movies = paginate(allMovies, currentPage, pageSize);
+      
+      const filtered =
+      selectedGenre 
+        ? allMovies.filter(m => m.genre._id === selectedGenre._id)
+        : allMovies;
+
+      const movies = paginate(filtered, currentPage, pageSize);
 
         return (
           <div className="row">
@@ -59,7 +65,7 @@ class Counter extends Component {
             <div className="col">
             
                         
-            <p>Showing {count} movies in the database.</p>
+            <p>Showing {filtered.length} movies in the database.</p>
             <table className="table">
               <thead>
                 <tr>
@@ -97,7 +103,7 @@ class Counter extends Component {
               </tbody>
             </table>
             <Pagination
-              itemsCount={count}
+              itemsCount={filtered.length}
               pageSize={pageSize}
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
