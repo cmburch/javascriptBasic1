@@ -32,12 +32,13 @@ class Counter extends Component {
   };
 
   handlePageChange = page => {
-    console.log(page);
+    // console.log(page);
     this.setState({ currentPage: page });
   };
 
   handleGenreSelect = genre => {
-    console.log(genre);
+    // console.log(genre);
+    this.setState({ selectedGenre: genre});
   };
     render() {
       const { length: count } = this.state.movies;
@@ -52,6 +53,7 @@ class Counter extends Component {
             <div className="col-3">
               <ListGroup 
               onItemSelect={this.handleGenreSelect}
+              selectedItem={this.state.selectedGenre}
               items={this.state.genres}/>
             </div>
             <div className="col">
