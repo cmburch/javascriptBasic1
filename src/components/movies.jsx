@@ -51,8 +51,6 @@ class Counter extends Component {
           <div className="row">
             <div className="col-3">
               <ListGroup 
-              textProperty='name'
-              valueProperty='_id'
               onItemSelect={this.handleGenreSelect}
               items={this.state.genres}/>
             </div>
