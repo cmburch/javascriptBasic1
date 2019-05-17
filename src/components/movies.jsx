@@ -15,7 +15,8 @@ class Counter extends Component {
   };
 
   componentDidMount() {
-    this.setState({ movies: getMovies(), genres:getGenres() });
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
+    this.setState({ movies: getMovies(), genres});
   }
 
   handleDelete = movie => {
@@ -39,7 +40,7 @@ class Counter extends Component {
   handleGenreSelect = genre => {
     // console.log(genre);
     console.log(this.state);
-    this.setState({ selectedGenre: genre});
+    this.setState({ selectedGenre: genre, currentPage: 1});
   };
     render() {
       const { length: count } = this.state.movies;
@@ -48,7 +49,8 @@ class Counter extends Component {
       if (count === 0) return <p>There are no movies in the database.</p>;
       
       const filtered =
-      selectedGenre 
+      //only apply filter if selectedGenre has an ID else return all the movies
+      selectedGenre && selectedGenre._id
         ? allMovies.filter(m => m.genre._id === selectedGenre._id)
         : allMovies;
 
