@@ -64,7 +64,8 @@ class Counter extends Component {
         : allMovies;
 
       const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
+      //these are the movies displayed on the UI
+      //paginate returns section of movie array ,depending on current array pointer
       const movies = paginate(sorted, currentPage, pageSize);
 
         return (
