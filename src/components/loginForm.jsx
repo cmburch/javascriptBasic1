@@ -9,12 +9,21 @@ state = {
 };
 
 validate = () => {
-    return { username: 'Username is required.'}
+    const errors = {};
+    const { account } = this.state;
+    if (account.username.trim() === "")
+      errors.username = "Username is require";
+    if (account.password.trim() === "")
+      errors.password = "Password is require";
+
+    //if the error object does not have properties return null else return the errors
+    return Object.keys(errors).length === 0 ? null : errors;
 }
   handleSubmit = e => {
     e.preventDefault();
 
     const errors = this.validate();
+    console.log(errors);
     this.setState({ errors });
     if(errors) return;
     //call the server in the future
@@ -23,7 +32,7 @@ validate = () => {
 
   handleChange = ({ currentTarget: input }) => {
     //clone the state
-    const account = {...this.state};
+    const account = {...this.state.account};
     account[input.name] = input.value;
     // account.username = e.currentTarget.value;
     
