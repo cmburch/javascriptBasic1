@@ -11,30 +11,29 @@ state = {
 
 schema = {
     username: Joi.string()
-      .required(),
+      .required().label('Username'),
     password: Joi.string()
-      .required()
+      .required().label('Password')
   };
 
 validate = () => {
-
-    const result = Joi.validate(this.state.account, this.schema, { abortEarly: false });
+    const options = { abortEarly: false};
+    const { error } = Joi.validate(this.state.account, this.schema, options);
     console.log(result);
-    const errors = {};
-    const { account } = this.state;
-    if (account.username.trim() === "")
-      errors.username = "Username is require";
-    if (account.password.trim() === "")
-      errors.password = "Password is require";
+    //mapping joi object note joy only return an error field on the object only if there is an error
+    //check for an error on the JOI object
+    if(!error) return null
 
-    //if the error object does not have properties return null else return the errors
-    return Object.keys(errors).length === 0 ? null : errors;
+    const errors = {}
+    for(let item of error.details)
+        errors[item.path[0]] = item.message //get the first item out the path object
+    return errors
 }
   handleSubmit = e => {
     e.preventDefault();
 
     const errors = this.validate();
-    console.log(errors);
+    // console.log(errors);
     //this should always reset to the errors or an empty object
     this.setState({ errors: errors || {} });
     if(errors) return;
