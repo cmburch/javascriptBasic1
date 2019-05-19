@@ -31,13 +31,32 @@ validate = () => {
     console.log("submitted");
   };
 
+  validateProperty = ({name,value}) => {
+      //input is destructered (name,value)
+      if(name === 'username'){
+        if(value.trim() === "")
+            return "Username is require";
+      }
+
+      if(name === 'password'){
+        if(value.trim() === "")
+            return "Password is require";
+      }
+  }
+
   handleChange = ({ currentTarget: input }) => {
+     //clone the error state
+    const errors = {...this.state.errors};
+    const errorMessage = this.validateProperty(input);
+    if(errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+
     //clone the state
     const account = {...this.state.account};
     account[input.name] = input.value;
     // account.username = e.currentTarget.value;
     
-    this.setState({account});
+    this.setState({account,errors});
   };
   render() {
     const { account,errors } = this.state;
