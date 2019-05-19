@@ -5,3 +5,4 @@ const Rentals = () => {
 }
  
 export default Rentals;
+
