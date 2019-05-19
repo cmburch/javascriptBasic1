@@ -24,7 +24,8 @@ validate = () => {
 
     const errors = this.validate();
     console.log(errors);
-    this.setState({ errors });
+    //this should always reset to the errors or an empty object
+    this.setState({ errors: errors || {} });
     if(errors) return;
     //call the server in the future
     console.log("submitted");
@@ -39,7 +40,7 @@ validate = () => {
     this.setState({account});
   };
   render() {
-    const { account } = this.state;
+    const { account,errors } = this.state;
     return (
       <div>
         <h1>Login</h1>
@@ -49,12 +50,14 @@ validate = () => {
             value={account.username}
             label='Username'
             onChange={this.handleChange}
+            error={errors.username}
           />
           <Input
             name='password'
             value={account.password}
             label='Password'
             onChange={this.handleChange}
+            error={errors.password}
           />
 
           <button className="btn btn-primary">Login</button>
