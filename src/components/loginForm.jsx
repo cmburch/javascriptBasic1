@@ -19,7 +19,6 @@ schema = {
 validate = () => {
     const options = { abortEarly: false};
     const { error } = Joi.validate(this.state.account, this.schema, options);
-    console.log(result);
     //mapping joi object note joy only return an error field on the object only if there is an error
     //check for an error on the JOI object
     if(!error) return null
