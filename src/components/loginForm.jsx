@@ -40,17 +40,12 @@ validate = () => {
     console.log("submitted");
   };
 
-  validateProperty = ({name,value}) => {
-      //input is destructered (name,value)
-      if(name === 'username'){
-        if(value.trim() === "")
-            return "Username is require";
-      }
-
-      if(name === 'password'){
-        if(value.trim() === "")
-            return "Password is require";
-      }
+  validateProperty = ({name,value}) => {    
+     const obj = {[name]: value};
+     //this creates a schema with only one property
+     const schema = { [name]: this.schema[name]}
+     const {error} = Joi.validate(obj,schema);
+     return error ? error.details[0].message: null;  
   }
 
   handleChange = ({ currentTarget: input }) => {
