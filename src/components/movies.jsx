@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MoviesTable from "./moviesTable";
+import { Link } from "react-router-dom";
 import ListGroup from "./common/listGroup";
 import { getMovies } from "../services/fakeMovieService";
 import Pagination from "./common/pagination";
@@ -82,33 +83,41 @@ class Counter extends Component {
        
       const { totalCount, data: movies } = this.getPagedData();
       return (
-          <div className="row">
-            <div className="col-3">
-              <ListGroup 
+        <div className="row">
+          <div className="col-3">
+            <ListGroup
               onItemSelect={this.handleGenreSelect}
               selectedItem={this.state.selectedGenre}
-              items={this.state.genres}/>
-            </div>
-            <div className="col">
-            
-                        
+              items={this.state.genres}
+            />
+          </div>
+
+          <div className="col">
+            <Link
+              to="/movies/new"
+              className="btn btn-primary"
+              style={{ marginBottom: 20 }}
+            >
+              New Movie
+            </Link>
+
             <p>Showing {totalCount} movies in the database.</p>
             <MoviesTable
-            movies={movies}
-            sortColumn={sortColumn}
-            onLike={this.handleLike}
-            onDelete={this.handleDelete}
-            onSort={this.handleSort}
-          />
+              movies={movies}
+              sortColumn={sortColumn}
+              onLike={this.handleLike}
+              onDelete={this.handleDelete}
+              onSort={this.handleSort}
+            />
             <Pagination
               itemsCount={totalCount}
               pageSize={pageSize}
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
             />
-            </div>
           </div>
-        );
+        </div>
+      );
     }
 
 }
